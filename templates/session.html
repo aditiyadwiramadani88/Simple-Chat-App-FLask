@@ -48,7 +48,7 @@
           })
           socket.emit( 'my event', {
             to : to,
-            message : user_input,
+            msg : user_input,
           })
         })
       })
@@ -63,10 +63,10 @@
         if( typeof msg.to !== 'undefined' ) {
           $( 'h3' ).remove()
           if(msg.to == "{{sesi}}"){
-            $( 'div.message_holder' ).append(`<p>${msg.you}: ${msg.message} </p>`)
-          }else if(msg.you == '{{sesi}}'){  
+            $( 'div.message_holder' ).append(`<p>${msg.you}: ${msg.msg} </p>`)
+          }else if(msg.you == '{{sesi}}'){
 
-            $( 'div.message_holder' ).append(`<p>you : ${msg.message} </p>`)
+            $( 'div.message_holder' ).append(`<p>you : ${msg.msg} </p>`)
           }
         }
       })

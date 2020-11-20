@@ -25,7 +25,7 @@ class Users(db.Model):
 class Chat(db.Model):
     __tablename__ = 'chat'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), db.ForeignKey('users.username'))
+    # username = db.Column(db.String(120), db.ForeignKey('users.username'))
     msg = db.Column(db.Text)
     to = db.Column(db.String(120))
     you = db.Column(db.String(120))
@@ -100,7 +100,9 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 					socketio.emit('error', {'msg': 'To error'}, callback=messageReceived)
 			 else:
 				 json['you'] = session['name']
-				 print('ada')
+				 add_d = Chat(**json)
+				 db.session.add(add_d)
+				 db.session.commit()
 				 if json['to'] == session['name']: 
 						 socketio.emit('my response', json, callback=messageReceived)
 				 elif json['you'] == session['name']: 
