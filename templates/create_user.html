@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>create user</title>
+     <style>
+		 .error{ 
+			 color: hsl(0, 85%, 63%);
+		 }
+		 .sus{ 
+			 color: rgb(51, 255, 129);
+		 }
+	 </style>
+</head>
+<body>
+	<!-- Small boxes (Stat box) -->
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+	{% for category, message in messages %}
+	    <p class="{{category}}">{{message}}</p>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
+
+	<form method="post">
+	<input type="text" name="username">
+	<br>
+	<input type="password" name="password" id="pass">
+     <br>
+	<button type="submit">Save</button>
+	</form>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Flask_Chat_App</title>
+    <style>
+      		 .error{ 
+			 color: hsl(0, 85%, 63%);
+		 }
+		 .sus{ 
+			 color: rgb(51, 255, 129);
+		 }
+    </style>
+
+  </head>
+  <body>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <p class="{{category}}">{{message}}</p>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    <h3 style='color: #ccc;font-size: 30px;'>No Pesan</h3>
+    <div class="message_holder"></div>
+
+    <form action="" method="POST">
+    <input type="text" name="nama" id="to">
+      <input type="text" class="message" placeholder="Messages"/>
+      <input type="submit"/>
+    </form>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).submit((e) => {
+          e.preventDefault()
+          let user_input = $( 'input.message' ).val()
+          let to =  $('#to').val()
+          socket.on('input_error', (e) => {
+            console.log(e);
+          })
+          socket.emit( 'my event', {
+            to : to,
+            message : user_input,
+          })
+        })
+      })
+
+
+     socket.on('error', (e) => { 
+       console.log(e)
+        
+     })
+      socket.on( 'my response', function(msg) {
+        console.log(msg);
+        if( typeof msg.to !== 'undefined' ) {
+          $( 'h3' ).remove()
+          if(msg.to == "{{sesi}}"){
+            $( 'div.message_holder' ).append(`<p>${msg.you}: ${msg.message} </p>`)
+          }else if(msg.you == '{{sesi}}'){  
+
+            $( 'div.message_holder' ).append(`<p>you : ${msg.message} </p>`)
+          }
+        }
+      })
+    </script>
+
+  </body>
+  </html>
